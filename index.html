@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>오늘 급식 알리미</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Song+Myung&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg-orb bg-orb-a" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb-b" aria-hidden="true"></div>
+
+    <div class="app">
+      <header class="hero">
+        <p class="eyebrow">School Lunch Notifier</p>
+        <h1>오늘 급식 알리미</h1>
+        <p class="lead">학교를 고르면 해당 날짜의 조식 · 중식 · 석식을 바로 보여 줍니다.</p>
+      </header>
+
+      <section class="school-panel" aria-label="학교 선택">
+        <label class="field-label" for="school-search">학교 검색</label>
+        <div class="search-row">
+          <input
+            id="school-search"
+            type="search"
+            placeholder="학교 이름을 입력하세요 (예: 서울고등학교)"
+            autocomplete="off"
+          />
+          <button id="search-btn" type="button">검색</button>
+        </div>
+        <p id="selected-school" class="selected-school">학교를 검색해 선택해 주세요.</p>
+        <ul id="school-results" class="school-results" hidden></ul>
+      </section>
+
+      <section class="date-bar" aria-label="날짜 선택">
+        <button id="prev-day" type="button" class="nav-btn" aria-label="이전 날">‹</button>
+        <div class="date-display">
+          <p id="weekday" class="weekday"></p>
+          <h2 id="date-title"></h2>
+          <button id="today-btn" type="button" class="today-chip">오늘로 이동</button>
+        </div>
+        <button id="next-day" type="button" class="nav-btn" aria-label="다음 날">›</button>
+      </section>
+
+      <main id="meal-board" class="meal-board" aria-live="polite"></main>
+
+      <section class="allergy-guide" aria-label="알레르기 안내">
+        <details>
+          <summary>알레르기 유발 식재료 번호</summary>
+          <ol id="allergy-list"></ol>
+        </details>
+      </section>
+
+      <footer>
+        데이터 출처: 나이스 교육정보 개방 포털 (open.neis.go.kr)
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
