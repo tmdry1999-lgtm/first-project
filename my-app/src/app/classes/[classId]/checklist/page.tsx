@@ -1,12 +1,26 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
-import { setChecklistEntriesBulk } from './actions'
+import { setChecklistEntry, setChecklistEntriesBulk } from './actions'
 import { fetchTodayMenu } from '@/utils/neis'
-import StudentChecklistRow from './StudentChecklistRow'
-import { LEVELS, LEVEL_ACTIVE_COLOR, LEVEL_EMOJI, type Level } from './constants'
+import MenuPicker from './MenuPicker'
 
 export const dynamic = 'force-dynamic'
+
+const LEVELS = ['다 먹었어요!', '노력했어요!', '더 노력해봐요!'] as const
+type Level = (typeof LEVELS)[number]
+
+const LEVEL_ACTIVE_COLOR: Record<Level, string> = {
+  '다 먹었어요!': 'border-green-500 bg-green-100 text-green-800',
+  '노력했어요!': 'border-yellow-500 bg-yellow-100 text-yellow-800',
+  '더 노력해봐요!': 'border-red-500 bg-red-100 text-red-800',
+}
+
+const LEVEL_EMOJI: Record<Level, string> = {
+  '다 먹었어요!': '😊',
+  '노력했어요!': '💪',
+  '더 노력해봐요!': '😂',
+}
 
 const WEEKDAY_LABEL = ['월', '화', '수', '목', '금']
 
@@ -412,13 +426,48 @@ export default async function ChecklistPage({
                       </span>
                     )}
                   </label>
-                  <StudentChecklistRow
-                    studentId={s.id}
-                    date={dateStr}
-                    initialLevel={currentLevel}
-                    todayMenu={todayMenu}
-                    initialMenu={Array.from(savedMenuSet)}
-                  />
+                  <div className="flex flex-col items-end gap-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-muted">상태</span>
+                      <form
+                        action={setChecklistEntry}
+                        className="flex flex-wrap justify-end gap-2"
+                      >
+                        <input type="hidden" name="class_id" value={classId} />
+                        <input type="hidden" name="student_id" value={s.id} />
+                        <input type="hidden" name="date" value={dateStr} />
+                        <input type="hidden" name="view" value="day" />
+                        {LEVELS.map((level) => (
+                          <button
+                            key={level}
+                            type="submit"
+                            name="level"
+                            value={level}
+                            className={`rounded-xl border px-3 py-1.5 text-sm ${
+                              currentLevel === level
+                                ? LEVEL_ACTIVE_COLOR[level]
+                                : 'border-line bg-white text-muted hover:bg-[#f7efe4]'
+                            }`}
+                          >
+                            {level}
+                          </button>
+                        ))}
+                      </form>
+                    </div>
+
+                    {todayMenu.length > 0 && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted">메뉴</span>
+                        <MenuPicker
+                          studentId={s.id}
+                          date={dateStr}
+                          level={currentLevel}
+                          todayMenu={todayMenu}
+                          initialSelected={Array.from(savedMenuSet)}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </li>
               )
             })}
