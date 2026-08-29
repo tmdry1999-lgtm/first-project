@@ -53,7 +53,8 @@ async function fetchNeis(endpoint: string, params: Record<string, string>) {
     url.searchParams.set(key, value)
   })
 
-  const response = await fetch(url, { cache: 'no-store' })
+  // 같은 학교/날짜 조회는 10분간 캐시해서 재사용 (상태 버튼 클릭마다 매번 NEIS를 다시 호출하지 않도록)
+  const response = await fetch(url, { next: { revalidate: 600 } })
   if (!response.ok) {
     throw new Error('NEIS 응답을 받지 못했습니다')
   }
