@@ -58,11 +58,31 @@ body {
   padding: 40px 0 64px;
 }
 
+.hero-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .hero h1 {
   font-family: "Song Myung", serif;
   font-size: clamp(2rem, 5vw, 3rem);
   margin: 8px 0 10px;
   letter-spacing: -0.02em;
+}
+
+.checklist-link {
+  color: var(--accent-dark);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.checklist-link:hover {
+  text-decoration: underline;
 }
 
 .eyebrow {
