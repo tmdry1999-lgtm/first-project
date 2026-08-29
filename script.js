@@ -146,6 +146,21 @@ function showEmpty(title, message) {
   `;
 }
 
+function buildNaverImageSearchUrl(query) {
+  return `https://search.naver.com/search.naver?where=image&sm=tab_jum&query=${encodeURIComponent(query)}`;
+}
+
+function attachMealSearchHandlers() {
+  els.board.querySelectorAll(".dish-search-btn").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const query = button.dataset.query;
+      if (!query) return;
+      window.open(buildNaverImageSearchUrl(query), "_blank", "noopener,noreferrer");
+    });
+  });
+}
+
 function renderMeals(rows) {
   if (!rows.length) {
     showEmpty("급식 정보가 없습니다", "주말, 공휴일, 방학이거나 아직 식단이 등록되지 않았을 수 있습니다.");
@@ -161,10 +176,13 @@ function renderMeals(rows) {
       const dishHtml = dishes
         .map((dish) => {
           const tags = dish.codes.map((code) => ALLERGY_MAP[code]).join(", ");
+          const searchQuery = `${dish.name} 음식`;
           return `
             <li>
-              <span>${dish.name}</span>
-              <span class="allergy-tags">${tags || ""}</span>
+              <button type="button" class="dish-search-btn" data-query="${searchQuery}">
+                <span>${dish.name}</span>
+                <span class="allergy-tags">${tags || ""}</span>
+              </button>
             </li>
           `;
         })
@@ -181,6 +199,8 @@ function renderMeals(rows) {
       `;
     })
     .join("");
+
+  attachMealSearchHandlers();
 }
 
 async function loadMeals() {

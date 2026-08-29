@@ -257,9 +257,6 @@ body {
 }
 
 .dish-list li {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
   padding-bottom: 10px;
   border-bottom: 1px dashed var(--line);
 }
@@ -267,6 +264,25 @@ body {
 .dish-list li:last-child {
   border-bottom: 0;
   padding-bottom: 0;
+}
+
+.dish-search-btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.dish-search-btn span:first-child {
+  flex: 1;
 }
 
 .allergy-tags {
